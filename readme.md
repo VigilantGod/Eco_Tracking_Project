@@ -29,7 +29,7 @@ Ensure you have **Python** installed.
 
 ### 2. Clone the Repository
 ```bash
-git clone 
+git clone https://github.com/VigilantGod/Eco_Tracking_Project.git
 cd EcoTrack_System
 
 ### 3.Install required packages
