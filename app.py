@@ -4,7 +4,7 @@ from modules.login import login
 from modules.register import register
 st.set_page_config(
     page_title="Ecotrack Logistics",
-    page_icon=":truck:",
+    page_icon="assets/ico.png",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -22,6 +22,9 @@ def main():
     
     if not st.session_state.logged_in:
         pg = st.navigation([loginPage, registerPage])
+        pg.run()
+    else:
+        pg = st.navigation([trackingPage, routingPage, ticketingPage])
         pg.run()
 
 if __name__ == "__main__":

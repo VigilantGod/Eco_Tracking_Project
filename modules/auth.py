@@ -46,6 +46,6 @@ def verify_password(txt_password,hashed_pass):
     """
     verifies a password against a hashed password
     """
-    return bcrypt.checkpw(txt_password.encode('utf-8',hashed_pass))
+    return bcrypt.checkpw(txt_password.encode('utf-8'),hashed_pass)
 
 
