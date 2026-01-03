@@ -1,15 +1,28 @@
 import streamlit as st
 from modules import auth,tracking,routing,ticketing
-
+from modules.login import login
+from modules.register import register
 st.set_page_config(
     page_title="Ecotrack Logistics",
     page_icon=":truck:",
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
 def main():
-    return 0
+    st.title("Welcome to Ecotrack Logistics")
+
+    if 'logged_in' not in st.session_state:
+        st.session_state.logged_in = False
+
+    loginPage = st.Page(page=login,title="Login in to Ecotrack")
+    registerPage = st.Page(page=register,title="Register to Ecotrack")
+    trackingPage = st.Page("modules/tracking.py")
+    routingPage = st.Page("modules/routing.py")
+    ticketingPage = st.Page("modules/ticketing.py")
+    
+    if not st.session_state.logged_in:
+        pg = st.navigation([loginPage, registerPage])
+        pg.run()
 
 if __name__ == "__main__":
     main()
