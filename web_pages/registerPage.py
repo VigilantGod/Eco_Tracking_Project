@@ -1,7 +1,7 @@
 import streamlit as st
 from modules import database
 from modules import auth
-from web_pages.loginPage import login
+
 
 st.title("Register to Ecotrack")
 
