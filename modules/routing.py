@@ -1,7 +1,10 @@
-import geopy
+from geopy import Nominatim
 import routingpy
 
+#web api for calculating routes
 router = routingpy.OSRM()
+
+geolocator = Nominatim(user_agent="Eco_track_prototype")
 
 def get_routes(start_cords,end_cords,vehicleType):
     """
@@ -13,3 +16,6 @@ def get_routes(start_cords,end_cords,vehicleType):
 
     return routes
 
+def get_cords(location:str):
+    """ Returns location cordinates for string location"""
+    return geolocator.geocode(location)
