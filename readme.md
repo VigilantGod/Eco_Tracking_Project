@@ -46,8 +46,13 @@ EcoTrack_System/
 │   ├── auth.py             # Login/Register Logic
 │   ├── tracking.py         # Parcel Tracking & Map Logic (Dev 3)
 │   ├── routing.py          # Route Optimization Algorithms (Dev 3)
-│   └── ticketing.py        # Customer Support Forms (Dev 4)
+│   ├── ticketing.py        # Customer Support Forms (Dev 4)
+│   └── database.py         # Database Logic            
 ├── data/
 │   └── ecotrack.db         # Database (Auto-generated, do not delete)
+├── web_pages               
+│   ├── login.py            # Login page
+│   └── register.py         # Register Page
+│
 ├── docs/                   # User Manuals & Tech Docs (Team 4 & 5)
 └── assets/                 # Images & Logos

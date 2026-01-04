@@ -15,7 +15,7 @@ def main():
         st.session_state.logged_in = False
 
     loginPage = st.Page(page=login,title="Login in to Ecotrack")
-    registerPage = st.Page(page=register,title="Register to Ecotrack")
+    registerPage = st.Page(page=register)
     trackingPage = st.Page("modules/tracking.py")
     routingPage = st.Page("modules/routing.py")
     ticketingPage = st.Page("modules/ticketing.py")
