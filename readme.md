@@ -50,9 +50,13 @@ EcoTrack_System/
 │   └── database.py         # Database Logic            
 ├── data/
 │   └── ecotrack.db         # Database (Auto-generated, do not delete)
-├── web_pages               
+├── web_pages          
 │   ├── login.py            # Login page
-│   └── register.py         # Register Page
+│   ├── register.py         # Register Page
+│   ├── trackingPage.py     # Tracking Page
+│   ├── routingPage.py      # Routing Page
+│   └── ticketingPage.py    # Ticketing Page
+│   
 │
 ├── docs/                   # User Manuals & Tech Docs (Team 4 & 5)
 └── assets/                 # Images & Logos
