@@ -1,4 +1,5 @@
 from modules import auth
+from modules import database
 import streamlit as st
 import time
 
@@ -19,9 +20,9 @@ with st.form(key='login_form'):
 
     if submit_button:
         #get database session
-        db = auth.get_db()
+        db = database.get_db()
         #get user from database
-        user = db.query(auth.Users).filter(auth.Users.username == username).first()
+        user = db.query(database.Users).filter(database.Users.username == username).first()
         if user and auth.verify_password(password, user.password):
             st.success("Login successful!")
             #To ensure user don't have to login everytime UI component change occurs
