@@ -1,15 +1,17 @@
 import streamlit as st
 from modules import database
 from modules import auth
-from web_pages.login import login
+from web_pages.loginPage import login
 
-st.title(title="Register to Ecotrack")
+st.title("Register to Ecotrack")
+
 with st.form(key='register_form'):
     #user input fields
     username = st.text_input("Choose a Username")
     password = st.text_input("Choose a Password", type="password")
     #link for login page
-    st.page_link(page="web_pages/regiter.py", label="Already have an account? Login here.")
+    st.page_link(page="web_pages/registerPage.py", label="Already have an account? Login here.")
+
     submit_button = st.form_submit_button(label='Register')
 
     if submit_button:

@@ -1,8 +1,4 @@
 import streamlit as st
-from modules import auth,tracking,routing,ticketing
-from web_pages.login import login
-from web_pages.register import register
-import time
 
 st.set_page_config(
     page_title="Ecotrack Logistics",
@@ -16,8 +12,8 @@ def main():
     if 'logged_in' not in st.session_state:
         st.session_state.logged_in = False
 
-    loginPage = st.Page(page="web_pages/login.py")
-    registerPage = st.Page(page="web_pages/register.py")
+    loginPage = st.Page(page="web_pages/loginPage.py")
+    registerPage = st.Page(page="web_pages/registerPage.py")
     trackingPage = st.Page("modules/tracking.py")
     routingPage = st.Page("modules/routing.py")
     ticketingPage = st.Page("modules/ticketing.py")

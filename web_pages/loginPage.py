@@ -14,7 +14,7 @@ with st.form(key='login_form'):
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     #link for registration page
-    st.page_link(label ="Don't have an account? Register here.",page="web_pages/register.py")
+    st.page_link(label ="Don't have an account? Register here.",page="web_pages/registerPage.py")
 
     submit_button = st.form_submit_button(label='Login')
 
