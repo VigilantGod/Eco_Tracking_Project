@@ -7,7 +7,7 @@ def login():
     """
     Renders the login page
     """
-st.tiltle("Log in to EcoTrack")
+st.title("Log in to EcoTrack")
 with st.form(key='login_form'):
     #User input fields
     username = st.text_input("Username")

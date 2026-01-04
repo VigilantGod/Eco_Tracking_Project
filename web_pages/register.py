@@ -1,4 +1,5 @@
 import streamlit as st
+from modules import database
 from modules import auth
 from web_pages.login import login
 
@@ -13,7 +14,7 @@ with st.form(key='register_form'):
 
     if submit_button:
         #get database session
-        db = auth.get_db()
+        db = database.get_db()
         existing_User = db.query(auth.Users).filter(auth.Users.username == username).first()
         if existing_User:
             #checks if the usrname still exists
