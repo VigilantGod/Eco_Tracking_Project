@@ -14,10 +14,10 @@ def hash_password(password:str):
     """
     return bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt()).decode("utf-8")
 
-def verify_password(txt_password,hashed_pass):
+def verify_password(txt_password:str,hashed_pass:str):
     """
     verifies a password
     """
-    return bcrypt.checkpw(txt_password.encode('utf-8'),hashed_pass)
+    return bcrypt.checkpw(txt_password.encode('utf-8'),hashed_pass.encode("utf-8"))
 
 
