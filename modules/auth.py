@@ -3,10 +3,10 @@ from modules import database
 
 def create_user(username:str,password:str):
     """Cretaes a User"""
-    hashed_password = hash_password(password=password).decode("utf-8")
+    hashed_password = hash_password(password=password)
     db = database.get_db()
 
-    database.store(username,hashed_password)
+    database.store_user(db,username,hashed_password)
 
 def hash_password(password:str):
     """
