@@ -14,9 +14,9 @@ def main():
 
     loginPage = st.Page(page="web_pages/loginPage.py")
     registerPage = st.Page(page="web_pages/registerPage.py")
-    trackingPage = st.Page("web_pages/trackingPage")
-    routingPage = st.Page("web_pages/routingPage.py")
-    ticketingPage = st.Page("web_apps/ticketingPage.py")
+    trackingPage = st.Page("web_pages/trackingPage.py")
+    routingPage = st.Page("web_pages/userOrderPage.py")
+    ticketingPage = st.Page("web_pages/ticketingPage.py")
     
     if not st.session_state.logged_in:
 
