@@ -17,12 +17,12 @@ with st.form(key='register_form'):
     if submit_button:
         #get database session
         db = database.get_db()
-        existing_User = db.query(auth.Users).filter(auth.Users.username == username).first()
+        existing_User = db.query(database.Users).filter(database.Users.username == username).first()
         if existing_User:
             #checks if the usrname still exists
             st.error("Username already exists. Please choose a different one.")
         else:
             #store user details
-            auth.create_user(db, username, password)
+            auth.create_user( username, password)
             #success message
             st.success("Registration successful! You can now log in.")
