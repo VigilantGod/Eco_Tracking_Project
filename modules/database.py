@@ -19,6 +19,9 @@ class Users(base):
 
     username = Column(String,primary_key=True,index=True)
     password = Column(String(128),nullable=False)
+    email = Column(String,nullable=False)
+    phone_number = Column(String,nullable=True)
+
 
 base.metadata.create_all(bind=engine)
 
@@ -28,9 +31,9 @@ def get_db():
     """
     return session()
 
-def  store_user(db,user:str,hashed_password:str):
+def  store_user(db,user:str,email:str,phone_number:str,hashed_password:str):
     """store a user details in the database"""
-    new_user = Users(username=user,password=hashed_password)
+    new_user = Users(username=user,email=email,phone_number=phone_number,password=hashed_password)
     #add new_user to the temporary memory of db
     db.add(new_user)
     #permenently saving details
