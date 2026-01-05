@@ -7,7 +7,7 @@ def create_user(username:str,email:str,phone_number:str,password:str):
     hashed_password = hash_password(password=password)
     db = database.get_db()
 
-    database.store_user(db,user=username,email=email,password=hashed_password,phone_number=phone_number)
+    database.store_user(db,user=username,email=email,phone_number=phone_number,hashed_password=hashed_password)
 
 
 def validate_phone_number(phone_number:str):
@@ -19,8 +19,9 @@ def validate_phone_number(phone_number:str):
 
 def validate_email(email:str):
     """validates a email"""
-    pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{5}$"
-    re.match(pattern=pattern,string=email)
+    pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    return re.match(pattern=pattern,string=email)
+
 def hash_password(password:str):
     """
     Hashes the password
