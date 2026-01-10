@@ -19,7 +19,7 @@ def getLocation():
         return  (userLocation,accuracy)
 
 def get_map(location,zoom_start:int,width:int,height:int):
-    return folium.Map
+    return folium.Map(location=location,zoom_start=zoom_start,width=width,height=height)
 def getLocationAproximately():
     g_ip = geocoder.ip("me")
     return g_ip.latlng
