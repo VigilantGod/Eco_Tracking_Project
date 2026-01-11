@@ -1,5 +1,6 @@
-from sqlalchemy import create_engine,Column,String,Float,ForeignKey
+from sqlalchemy import create_engine,Column,String,Float,ForeignKey,LargeBinary,Boolean,Integer
 from sqlalchemy.orm import declarative_base,sessionmaker,Mapped,mapped_column
+from modules import encrypt
 import os
 
 #creates the data directory if not exist
@@ -18,25 +19,32 @@ class Users(base):
     __tablename__ = "users"
 
     username = Column(String,primary_key=True,index=True)
-    full_name = Column(String,nullable=False)
-    phone_number = Column(String,nullable=True)
+    full_name = Column(LargeBinary,nullable=False)
+    phone_number = Column(LargeBinary,nullable=True)
     password = Column(String(128),nullable=False)
-    email = Column(String,nullable=False)
-    phone_number = Column(String,nullable=True)
+    email = Column(LargeBinary,nullable=False)
 
 class Parcel_Details(base):
     __tablename__ = "parcel_details"
 
     username = Column(String,ForeignKey("users.username"))
-    parcelId = Column(String,primary_key=True,nullable=False,index=True)
-    parcel_type = Column(String,index=True)
-    start_loc_lat = Column(Float,nullable=False)
-    start_loc_lon = Column(Float,nullable=False)
-    end_loc_lat = Column(Float,nullable=False)
-    end_loc_lon = Column(Float,nullable=False)
-    is_fragile = Column(Float,nullable=False)
-    is_gift = Column(Float,nullable=False)
-    description = Column(String,nullable=True)
+    sender_name = Column(LargeBinary,nullable=False)
+    contact_number = Column(LargeBinary,nullable=False)
+    parcel_id = Column(String,primary_key=True,nullable=False,index=True)
+    parcel_type = Column(LargeBinary,index=True)
+    start_loc = Column(LargeBinary,nullable=False)
+    end_loc = Column(LargeBinary,nullable=False)
+    is_fragile = Column(Boolean,nullable=False)
+    is_gift = Column(Boolean,nullable=False)
+    description = Column(LargeBinary,nullable=True)
+
+class Routes(base):
+    __tablename__ = "routes"
+
+    parcel_id = Column(String,ForeignKey("parcel_details.parcel_id"),primary_key=True,nullable=False)
+    route = Column(String,nullable=False)
+    duration = Column(Integer,nullable=False)
+    route_type = Column(String,nullable=False)
 
 base.metadata.create_all(bind=engine)
 
@@ -46,13 +54,52 @@ def get_db():
     """
     return session()
 
-def  store_user(db,full_name:str,user:str,email:str,phone_number:str,hashed_password:str):
-    """store a user details in the database"""
-    new_user = Users(full_name=full_name,username=user,email=email,phone_number=phone_number,password=hashed_password)
-    #add new_user to the temporary memory of db
-    db.add(new_user)
-    #permenently saving details
+def store_route(db,pid:str,route:str,duration:int,route_type:str):
+    new_route = Routes(
+        parcel_id = pid,
+        route = route,
+        duration = duration,
+        route_type = route_type
+    )
+    db.add(new_route)
     db.commit()
-    #reloads the db so it will get the most recent data
+    db.refresh(new_route)
+
+def store_parcel(db,user:str,full_name:str,phone_number:str,parcel_id:str,parcel_type:str,start_loc:str,end_loc:float,is_gift:bool,is_fragile:bool,description:str):
+    full_name = encrypt.encrypt_data(full_name)
+    phone_number = encrypt.encrypt_data(phone_number)
+    parcel_type = encrypt.encrypt_data(parcel_type)
+    start_loc = encrypt.encrypt_data(start_loc)
+    end_loc = encrypt.encrypt_data(end_loc)
+    description = encrypt.encrypt_data(description)
+
+    new_parcel = Parcel_Details(
+        username=user,
+        sender_name = full_name,
+        contact_number = phone_number,
+        parcel_id = parcel_id,
+        parcel_type=parcel_type,
+        start_loc = start_loc,
+        end_loc = end_loc,
+        is_fragile = is_fragile,
+        is_gift = is_gift,
+        description =description
+        )
+    
+    db.add(new_parcel)
+    db.commit()
+    db.refresh(new_parcel)
+
+
+def  store_user(db,full_name:str,user:str,email:str,phone_number:str,hashed_password:str):
+    """store encrypted user details in the database"""
+    full_name = encrypt.encrypt_data(full_name)
+    email = encrypt.encrypt_data(email)
+    phone_number = encrypt.encrypt_data(phone_number)
+    new_user = Users(full_name=full_name,username=user,email=email,phone_number=phone_number,password=hashed_password)
+
+    db.add(new_user)
+
+    db.commit()
+
     db.refresh(new_user)
-    return new_user

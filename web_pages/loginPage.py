@@ -4,10 +4,9 @@ import streamlit as st
 import time
 
 
-def login():
-    """
-    Renders the login page
-    """
+if "user" not in st.session_state:
+    st.session_state.user = ""
+
 st.title("Log in to EcoTrack")
 with st.form(key='login_form'):
     #User input fields
@@ -25,7 +24,8 @@ with st.form(key='login_form'):
         user = db.query(database.Users).filter(database.Users.username == username).first()
         if user and auth.verify_password(password, user.password):
             st.success("Login successful!")
-            #To ensure user don't have to login everytime UI component change occurs
+            st.session_state.user = username
+            #To ensure that a user don't have to login everytime UI component change occurs
             st.session_state.logged_in = True
             #to get time to show the success message
             time.sleep(0.3)
