@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine,Column,String,Float,ForeignKey
+from sqlalchemy import create_engine,Column,String,Float,ForeignKey,LargeBinary
 from sqlalchemy.orm import declarative_base,sessionmaker,Mapped,mapped_column
 import os
 
@@ -18,25 +18,25 @@ class Users(base):
     __tablename__ = "users"
 
     username = Column(String,primary_key=True,index=True)
-    full_name = Column(String,nullable=False)
-    phone_number = Column(String,nullable=True)
+    full_name = Column(LargeBinary,nullable=False)
+    phone_number = Column(LargeBinary,nullable=True)
     password = Column(String(128),nullable=False)
-    email = Column(String,nullable=False)
-    phone_number = Column(String,nullable=True)
+    email = Column(LargeBinary,nullable=False)
+    phone_number = Column(LargeBinary,nullable=True)
 
 class Parcel_Details(base):
     __tablename__ = "parcel_details"
 
     username = Column(String,ForeignKey("users.username"))
-    parcelId = Column(String,primary_key=True,nullable=False,index=True)
-    parcel_type = Column(String,index=True)
+    parcelId = Column(LargeBinary,primary_key=True,nullable=False,index=True)
+    parcel_type = Column(LargeBinary,index=True)
     start_loc_lat = Column(Float,nullable=False)
     start_loc_lon = Column(Float,nullable=False)
     end_loc_lat = Column(Float,nullable=False)
     end_loc_lon = Column(Float,nullable=False)
-    is_fragile = Column(Float,nullable=False)
-    is_gift = Column(Float,nullable=False)
-    description = Column(String,nullable=True)
+    is_fragile = Column(String,nullable=False)
+    is_gift = Column(String,nullable=False)
+    description = Column(LargeBinary,nullable=True)
 
 base.metadata.create_all(bind=engine)
 
