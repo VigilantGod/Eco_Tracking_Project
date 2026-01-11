@@ -8,9 +8,10 @@ st.title("Register to Ecotrack")
 
 with st.form(key='register_form'):
     #user input fields
+    full_name = st.text_input("Enter your full name")
+    phone_number = st.text_input("Enter your phone",placeholder="+94 XXX XXXX")
     username = st.text_input("Choose a Username")
     email = st.text_input("Enter your email")
-    phone_number = st.text_input("Enter your phone",placeholder="+94 XXX XXXX")
     password = st.text_input("Choose a Password", type="password")
     #link for login page
     st.page_link(page="web_pages/registerPage.py", label="Already have an account? Login here.")
@@ -34,7 +35,7 @@ with st.form(key='register_form'):
                 st.warning("Given phone number is not valid")
             else:
                 #store user details
-                auth.create_user( username,email,phone_number, password)
+                auth.create_user(full_name,username,email,phone_number, password)
                 #success message
                 st.success("Registration successful! You can now log in.")
                 time.sleep(0.3)

@@ -3,9 +3,12 @@ venv/
 .venv/
 env/
 
-# Ignore database files (don't share local data)
+# Ignore database files
 *.db
 *.sqlite3
 
 # Ignore compiled python files
 __pycache__/
+
+#Ignore encryption keys
+.env

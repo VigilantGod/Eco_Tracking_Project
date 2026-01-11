@@ -1,13 +1,21 @@
 import bcrypt
 from modules import database
 import re
+from modules import encrypt
 
 def create_user(full_name:str,username:str,email:str,phone_number:str,password:str):
     """Cretaes a User"""
     hashed_password = hash_password(password=password)
     db = database.get_db()
 
-    database.store_user(db,full_name=full_name,user=username,email=email,phone_number=phone_number,hashed_password=hashed_password)
+    database.store_user(
+        db,
+        full_name=full_name,
+        user=username,
+        email=email,
+        phone_number=phone_number,
+        hashed_password=hashed_password
+        )
 
 
 def validate_phone_number(phone_number:str):
