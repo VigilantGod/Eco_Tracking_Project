@@ -1,6 +1,5 @@
 # EcoTrack Logistics System (RAD Prototype)
-
-**Team Group:** [Insert Group Number]  
+  
 **Unit:** CCS1562 - Rapid Application Development  
 **Client:** EcoTrack Logistics  
 **Deadline:** January 16, 2026
