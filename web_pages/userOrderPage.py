@@ -10,7 +10,7 @@ import time
 def format_time(duration_sec):
     """Formats Time"""
     hours = int(duration_sec // 3600)
-    mins = int((duration_sec% 3600)// 60)
+    mins = int((duration_sec % 3600)// 60)
 
     if hours >0:
         return f"{hours}h {mins}min"

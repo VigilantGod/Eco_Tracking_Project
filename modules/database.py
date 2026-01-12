@@ -46,6 +46,13 @@ class Routes(base):
     duration = Column(Integer,nullable=False)
     route_type = Column(String,nullable=False)
 
+class Feedback(base):
+    __tablename__ = "feedback"
+
+    feedback_id = Column(String,primary_key=True,nullable=False)
+    star_rating = Column(Float)
+    feedback = Column(String)
+
 base.metadata.create_all(bind=engine)
 
 def get_db():
@@ -64,6 +71,17 @@ def store_route(db,pid:str,route:str,duration:int,route_type:str):
     db.add(new_route)
     db.commit()
     db.refresh(new_route)
+
+def store_feedback(db,fd_id:str,stars:float,feedbaack_text:str):
+    new_feedback = Feedback(
+        feedback_id = fd_id,
+        star_rating = stars,
+        feedback = feedbaack_text
+    )
+
+    db.add(new_feedback)
+    db.commit()
+    db.refresh(new_feedback)
 
 def store_parcel(db,user:str,full_name:str,phone_number:str,parcel_id:str,parcel_type:str,start_loc:str,end_loc:float,is_gift:bool,is_fragile:bool,description:str):
     full_name = encrypt.encrypt_data(full_name)
