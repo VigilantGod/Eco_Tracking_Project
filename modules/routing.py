@@ -33,7 +33,7 @@ def save_route(db,pid:str,route:list,duration:int,route_type:str):
     """
     Stores a route as a json string and others normally
     """
-    store_route(pid=pid,route = json.dumps(route),duration=duration,route_type=route_type)
+    store_route(db,pid=pid,route = json.dumps(route),duration=duration,route_type=route_type)
     
 
 def get_stored_route(db,parcel_id:str):

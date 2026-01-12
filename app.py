@@ -14,8 +14,8 @@ def main():
     loginPage = st.Page(page="web_pages/loginPage.py",icon=":material/login:",title="Login")
     registerPage = st.Page(page="web_pages/registerPage.py",icon=":material/person_add:",title="Register")
     trackingPage = st.Page("web_pages/trackingPage.py",icon=":material/location_on:",title="Tracking")
-    routingPage = st.Page("web_pages/userOrderPage.py",icon=":material/route:",title="Place Order")
-    feedbackPage = st.Page("web_pages/FeedbackPage.py",icon=":material/confirmation_number:", title="Feedback")
+    routingPage = st.Page("web_pages/userOrderPage.py",icon=":material/shopping_cart_checkout:",title="Place Order")
+    feedbackPage = st.Page("web_pages/feedbackPage.py",icon=":material/thumbs_up_down:", title="Feedback")
     
     if not st.session_state.logged_in:
         pg = st.navigation([loginPage, registerPage])
