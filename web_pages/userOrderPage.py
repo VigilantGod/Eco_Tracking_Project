@@ -57,7 +57,7 @@ def parcel_form():
             start_location = st.text_input(label="Where From")
             end_location = st.text_input(label="Where to")
 
-            weight = st.number_input(label="Weight(kg)",step=1)
+            weight = st.number_input(label="Weight(kg)",step=1,min_value=0)
             
             col1,col2 = st.columns(2)
             with col1:
@@ -110,15 +110,28 @@ def parcel_form():
                 st.rerun()
 
 def start_delivery(route):
-    db = database.get_db()
+    def simulation_threading(parcel_id,route_cords,duration):
+        thread_db = database.get_db()
+
+        try:
+            gps_sim.simulate_GPS_tracking(
+                db=thread_db,
+                parcel_id=parcel_id,
+                route_cords=route_cords,
+                duration=duration
+                )
+        except Exception as e:
+            print(f"Error in GPS simulation thread: {e}")
+        finally:
+            thread_db.close()
 
     import threading
 
     cords_list = [[lat,lon] for lon,lat in route["route"]]
+
     tracking_thread = threading.Thread(
-        target=gps_sim.simulate_GPS_tracking,
+        target=simulation_threading,
         args=(
-            db,
             st.session_state.parcel_id,
             cords_list,
             route["duration"])
@@ -188,7 +201,6 @@ def route_selection(show_route, update_selection):
                 """,
                 unsafe_allow_html=True
             )
-            is_selected = st.session_state.route_ind == i
 
             st.checkbox(
                 "Select Route",

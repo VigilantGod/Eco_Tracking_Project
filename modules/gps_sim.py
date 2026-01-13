@@ -13,7 +13,7 @@ def inject_GPS_points_route(route_cords,num_points=20):
     #each codinate space between route is now a part
     total_parts = len(route_cords) - 1
     #how much points per part
-    points_per_part = num_points // total_parts
+    points_per_part = max(1,num_points // total_parts)
 
     for i in range(len(route_cords)-1):
         start = route_cords[i]
@@ -32,7 +32,7 @@ def inject_GPS_points_route(route_cords,num_points=20):
 def save_GPS_loc(db,parcel_id:str,lat,lon,status:str):
     """Saves a given GPS location to database"""
     tracking_entry = GPSTracking(
-        id = random.randint(1,10000),
+        id = random.randint(1,100000),
         parcel_id = parcel_id,
         latitude = lat,
         longitude = lon,
@@ -57,7 +57,7 @@ def simulate_GPS_tracking(db,parcel_id:str,route_cords:list,duration:int):
     """Simulates GPS tracking by injecting points and saving them to database"""
     gps_points = inject_GPS_points_route(route_cords,num_points=30)
 
-    update_interval = 10#duration / len(gps_points)
+    update_interval = 10 #duration / len(gps_points)
 
     for i,(lat,lon) in enumerate(gps_points):
         progress_percent = (i+1) / len(gps_points) * 100

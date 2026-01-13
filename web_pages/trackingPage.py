@@ -79,7 +79,7 @@ if st.session_state.tracking_data:
     st.write(f"### **Latest Location**: Latitude: {latest_location.latitude}, Longitude: {latest_location.longitude}")
     st.write(f"### **Status:** {latest_location.status}")
 
-    track_map = map.get_map(location=[latest_location.latitude,latest_location.longitude],zoom_start=12,width=800,height=600,key=f"tracking_map_{current_parcel_id}")
+    track_map = map.get_map(location=[latest_location.latitude,latest_location.longitude],zoom_start=12,width=800,height=600)
     
     track_map.fit_bounds(bounds=[start_cords,end_cords])
 
@@ -115,5 +115,9 @@ if st.session_state.tracking_data:
     for loc in latest_GPS_entry:
         st.write(f"#### Time: {loc.timestamp}")
         st.write(f"####  Latitude: {loc.latitude} | Longitude: {loc.longitude} ")
+    
+    if latest_location.status != "Delivered":
+        time.sleep(2)
+        st.rerun()
 
     
