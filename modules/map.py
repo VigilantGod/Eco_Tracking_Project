@@ -20,13 +20,13 @@ def get_location():
         return  (userLocation,accuracy)
     return None
     
-def get_map(location,zoom_start:int,width:int,height:int):
+def get_map(location,zoom_start:int,width:int,height:int,key:str=None):
     """"
     Returns a map Object
     """
     if location is None:
         return None
-    return folium.Map(location=location,zoom_start=zoom_start,width=width,height=height)
+    return folium.Map(location=location,zoom_start=zoom_start,width=width,height=height,key=key)
 
 def add_routes_to_map(folium_map,route_cords,duration,distance,label,color):
     popup = folium.Popup(
@@ -38,5 +38,14 @@ def add_routes_to_map(folium_map,route_cords,duration,distance,label,color):
         tooltip=label,
         color=color,
         weight=5,
-        opacity=0.8
+        opacity=0.7
         ).add_to(folium_map)
+
+def add_marker_to_map(folium_map,location,popup_text,tooltip_text,icon_color,icon=None,prefix=None):
+    folium.Marker(
+        location=location,
+        popup=popup_text,
+        tooltip=tooltip_text,
+        icon=folium.Icon(color=icon_color,icon=icon,prefix=prefix)
+        ).add_to(folium_map)
+    

@@ -10,5 +10,3 @@ def generate_feedbackID():
     suffix = random.randint(100000,999999)
 
     return f"FD-{suffix}"
-
-  

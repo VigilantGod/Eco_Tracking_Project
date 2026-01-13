@@ -1,6 +1,7 @@
-from sqlalchemy import create_engine,Column,String,Float,ForeignKey,LargeBinary,Boolean,Integer
+from sqlalchemy import create_engine,Column,String,Float,ForeignKey,LargeBinary,Boolean,Integer,DateTime
 from sqlalchemy.orm import declarative_base,sessionmaker,Mapped,mapped_column
 from modules import encrypt
+from datetime import datetime
 import os
 
 #creates the data directory if not exist
@@ -23,6 +24,7 @@ class Users(base):
     phone_number = Column(LargeBinary,nullable=True)
     password = Column(String(128),nullable=False)
     email = Column(LargeBinary,nullable=False)
+    is_admin = Column(Boolean,default=False,nullable=False)
 
 class Parcel_Details(base):
     __tablename__ = "parcel_details"
@@ -54,6 +56,16 @@ class Feedback(base):
     feedback_id = Column(String,primary_key=True,nullable=False)
     star_rating = Column(Float)
     feedback = Column(String)
+
+class GPSTracking(base):
+    __tablename__ = "gps_tracking"
+
+    id = Column(Integer,primary_key=True,autoincrement=True)
+    parcel_id = Column(String,ForeignKey("parcel_details.parcel_id"),nullable=False)
+    latitude = Column(Float,nullable=False)
+    longitude = Column(Float,nullable=False)
+    timestamp = Column(DateTime,default=datetime.utcnow,nullable=False)
+    status = Column(String,nullable=False)
 
 base.metadata.create_all(bind=engine)
 
@@ -113,12 +125,12 @@ def store_parcel(db,user:str,full_name:str,phone_number:str,parcel_id:str,parcel
     db.refresh(new_parcel)
 
 
-def  store_user(db,full_name:str,user:str,email:str,phone_number:str,hashed_password:str):
+def  store_user(db,full_name:str,user:str,email:str,phone_number:str,hashed_password:str,is_admin:bool=False):
     """store encrypted user details in the database"""
     full_name = encrypt.encrypt_data(full_name)
     email = encrypt.encrypt_data(email)
     phone_number = encrypt.encrypt_data(phone_number)
-    new_user = Users(full_name=full_name,username=user,email=email,phone_number=phone_number,password=hashed_password)
+    new_user = Users(full_name=full_name,username=user,email=email,phone_number=phone_number,password=hashed_password,is_admin=is_admin)
 
     db.add(new_user)
 

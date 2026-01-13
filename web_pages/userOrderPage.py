@@ -1,10 +1,7 @@
 import streamlit as st
-from modules import map
+from modules import map,database,routing,encrypt,gps_sim
 from streamlit_folium import st_folium
-from modules import database
 from modules.tracking import generate_trackingID
-from modules import routing
-from modules import encrypt
 import time
 
 def format_time(duration_sec):
@@ -84,7 +81,7 @@ def parcel_form():
             end_cords = routing.get_cords(end_location)
 
             if start_cords is None or end_cords is None:
-                st.error("Coudn't Find the location.Check your internet connection")
+                st.error("Coudn't Find the location.Check your spelling")
             if st.session_state.fitted_bounds == False:
                 st.session_state.map.fit_bounds(bounds=[start_cords,end_cords],padding=(50,50),max_zoom=15)
             
@@ -112,6 +109,24 @@ def parcel_form():
                 time.sleep(0.3)
                 st.rerun()
 
+def start_delivery(route):
+    db = database.get_db()
+
+    import threading
+
+    cords_list = [[lat,lon] for lon,lat in route["route"]]
+    tracking_thread = threading.Thread(
+        target=gps_sim.simulate_GPS_tracking,
+        args=(
+            db,
+            st.session_state.parcel_id,
+            cords_list,
+            route["duration"])
+            )
+
+    tracking_thread.daemon= True
+    tracking_thread.start()
+    
 def route_selection(show_route, update_selection):
     st.title("Select Route")
     
@@ -187,6 +202,7 @@ def route_selection(show_route, update_selection):
     
     if confirm_button:
         route = route_list[st.session_state.route_ind]
+        start_delivery(route)
         routing.save_route(
             db=database.get_db(),
             pid=st.session_state.parcel_id,

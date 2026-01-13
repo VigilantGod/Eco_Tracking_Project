@@ -2,7 +2,6 @@ from geopy import Nominatim
 import routingpy
 import json
 from modules.database import store_route
-from geopy.exc import GeocoderTimedOut,GeocoderUnavailable
 
 #web api for calculating routes
 router = routingpy.OSRM()
@@ -19,8 +18,10 @@ def get_routes(start_cords,end_cords):
     start_lon_lat = [start_cords[1],start_cords[0]]
     end_lon_lat = [end_cords[1],end_cords[0]]
     cords = [start_lon_lat,end_lon_lat]
-    routes = router.directions(locations=cords,alternatives=True)
-
+    try:
+        routes = router.directions(locations=cords,alternatives=True)
+    except:
+        return None
     return routes
 
 def get_cords(location:str):
@@ -28,7 +29,7 @@ def get_cords(location:str):
     try:
         location = geolocator.geocode(location,timeout=3)
         return [location.latitude,location.longitude]
-    except(GeocoderUnavailable,GeocoderTimedOut):
+    except:
         return None
 
 def save_route(db,pid:str,user:str,route:list,duration:int,distance:float,route_type:str):
