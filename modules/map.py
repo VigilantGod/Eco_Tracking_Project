@@ -27,3 +27,16 @@ def get_map(location,zoom_start:int,width:int,height:int):
     if location is None:
         return None
     return folium.Map(location=location,zoom_start=zoom_start,width=width,height=height)
+
+def add_routes_to_map(folium_map,route_cords,duration,distance,label,color):
+    popup = folium.Popup(
+        html=f"<b>Duration : </b> {duration} <br> <b>Distance :</b> {distance} "
+    )
+    folium.PolyLine(
+        locations=route_cords,
+        popup=popup,
+        tooltip=label,
+        color=color,
+        weight=5,
+        opacity=0.8
+        ).add_to(folium_map)

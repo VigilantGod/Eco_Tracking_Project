@@ -38,25 +38,10 @@ def update_selection(selected_index:int,total_routes):
             st.session_state[key_name] = True
         else:
             st.session_state[key_name] = False
+def parcel_form():
+    st.session_state.fitted_bounds = False
+    st.session_state.line_added_maps = False
 
-
-if not "order_step" in st.session_state:
-    st.session_state.order_step = 0
-
-if not "map" in st.session_state:
-    st.session_state.map = map.get_map(location = [6.885015752177213,79.91146087646486],zoom_start = 13,width = 700,height=500)
-
-if not "routes" in st.session_state:
-    st.session_state.routes = None
-
-if not "route_ind" in st.session_state:
-    st.session_state.route_ind = 0
-
-if not "parcel_id" in st.session_state:
-    st.session_state.parcel_id = None
-
-
-if st.session_state.order_step == 0:
     st.title("Place an Order")
     from_user_details = st.toggle("Your details")
     with st.form(key="Parcel Form"):
@@ -75,7 +60,7 @@ if st.session_state.order_step == 0:
             start_location = st.text_input(label="Where From")
             end_location = st.text_input(label="Where to")
 
-            weight = st.number_input(label="Weight(kg)")
+            weight = st.number_input(label="Weight(kg)",step=1)
             
             col1,col2 = st.columns(2)
             with col1:
@@ -100,7 +85,9 @@ if st.session_state.order_step == 0:
 
             if start_cords is None or end_cords is None:
                 st.error("Coudn't Find the location.Check your internet connection")
-
+            if st.session_state.fitted_bounds == False:
+                st.session_state.map.fit_bounds(bounds=[start_cords,end_cords],padding=(50,50),max_zoom=15)
+            
             st.session_state.routes = routing.get_routes(start_cords=start_cords,end_cords=end_cords)
 
             if st.session_state.routes is None:
@@ -121,11 +108,11 @@ if st.session_state.order_step == 0:
                     )
 
                 st.success("Successfully saved parcel details")
-
                 st.session_state.order_step += 1
-                    
+                time.sleep(0.3)
+                st.rerun()
 
-elif st.session_state.order_step == 1:
+def route_selection(show_route, update_selection):
     st.title("Select Route")
     
     
@@ -147,23 +134,55 @@ elif st.session_state.order_step == 1:
 
     sorted_by_dist = sorted(route_list,key=lambda x: x["distance"])
     sorted_by_dist[0]["label"] = "Eco-Friendly Route"
-    cols = st.columns(len(route_list))
 
+    colors ={
+            "Fastest Route":"#0f36c0",
+            "Eco-Friendly Route": "#2fc00f",
+            "Standard Route":"#c0190f"
+        }
+    
+    if st.session_state.line_added_maps == False:        
+        for i in range(len(route_list) if len(route_list) <= 3 else 3):
+            route = route_list[i]
+            route_cords = [[lat,lon] for lon,lat in route["route"]]
+            map.add_routes_to_map(
+                st.session_state.map,
+                route_cords=route_cords,
+                distance=route["distance"],
+                duration=route["duration"],
+                label = route["label"],
+                color = colors[route["label"]]
+                )
+            
+    st.session_state.line_added_maps = True
+        
+    cols = st.columns(len(route_list))
 
     for i,(col,route) in enumerate(zip(cols,route_list)):
         with col:
             show_route(route)
 
+            color = colors[route["label"]]
+            st.markdown(
+                f"""
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <div style="width: 16px; height: 16px; background-color: {color}; 
+                                border-radius: 50%; border: 2px solid white;"></div>
+                    <h3 style="margin: 0;"></h3>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
             is_selected = st.session_state.route_ind == i
 
             st.checkbox(
                 "Select Route",
-                value=is_selected,
                 key=f"route_{i}",
                 on_change=update_selection,
                 args=(i,len(route_list))
                 )
-            
+    st_folium(st.session_state.map)        
+
     confirm_button = st.button("Confirm Selection",use_container_width=True)
     
     if confirm_button:
@@ -171,7 +190,9 @@ elif st.session_state.order_step == 1:
         routing.save_route(
             db=database.get_db(),
             pid=st.session_state.parcel_id,
+            user=st.session_state.user,
             route=route["route"],
+            distance=route["distance"],
             duration=route["duration"],
             route_type= route["label"]
             )
@@ -180,3 +201,34 @@ elif st.session_state.order_step == 1:
         st.session_state.order_step = 0
         time.sleep(0.5)
         st.rerun()
+
+if not "order_step" in st.session_state:
+    st.session_state.order_step = 0
+
+if not "map" in st.session_state:
+    st.session_state.map = map.get_map(location = [6.885015752177213,79.91146087646486],zoom_start = 13,width = 700,height=500)
+
+if not "routes" in st.session_state:
+    st.session_state.routes = None
+
+if not "route_ind" in st.session_state:
+    st.session_state.route_ind = 0
+
+if not "parcel_id" in st.session_state:
+    st.session_state.parcel_id = None
+
+if not "fitted_bounds" in st.session_state:
+    st.session_state.fitted_bounds = False
+
+if not "line_added_maps" in st.session_state:
+    st.session_state.line_added_maps = False
+
+def main(show_route, update_selection, parcel_form, route_selection):
+    if st.session_state.order_step == 0:
+        parcel_form()                   
+
+    elif st.session_state.order_step == 1:
+        route_selection(show_route, update_selection)
+
+#starting point
+main(show_route, update_selection, parcel_form, route_selection)

@@ -42,7 +42,9 @@ class Routes(base):
     __tablename__ = "routes"
 
     parcel_id = Column(String,ForeignKey("parcel_details.parcel_id"),primary_key=True,nullable=False)
+    username = Column(String,ForeignKey("users.username"))
     route = Column(String,nullable=False)
+    distance = Column(Float,nullable=False)
     duration = Column(Integer,nullable=False)
     route_type = Column(String,nullable=False)
 
@@ -61,10 +63,12 @@ def get_db():
     """
     return session()
 
-def store_route(db,pid:str,route:str,duration:int,route_type:str):
+def store_route(db,pid:str,user:str,route:str,distance:Float,duration:int,route_type:str):
     new_route = Routes(
         parcel_id = pid,
+        username = user,
         route = route,
+        distance= distance,
         duration = duration,
         route_type = route_type
     )
