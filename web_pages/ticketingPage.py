@@ -14,7 +14,7 @@ with st.form(key="ticket_form"):
     submit_button = st.form_submit_button(label="Submit Ticket")
 
     if submit_button:
-        if not all(username,parcel_id,urgency_level,issue_description):
+        if not all(username,parcel_id,related_issue,issue_description):
             st.warning("Please fill all the fields")
         else:
             db = database.get_db()
