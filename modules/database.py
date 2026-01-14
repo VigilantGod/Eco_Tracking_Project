@@ -61,11 +61,22 @@ class GPSTracking(base):
     __tablename__ = "gps_tracking"
 
     id = Column(Integer,primary_key=True,autoincrement=True)
-    parcel_id = Column(String,ForeignKey("parcel_details.parcel_id"),nullable=False)
+    parcel_id = Column(String,ForeignKey("parcel_details.parcel_id"),nullable=False,index=True)
     latitude = Column(Float,nullable=False)
     longitude = Column(Float,nullable=False)
     timestamp = Column(DateTime,default=datetime.utcnow,nullable=False)
     status = Column(String,nullable=False)
+
+class Tickets(base):
+    __tablename__ = "tickets"
+    
+    ticket_id = Column(String,primary_key=True,nullable=False)
+    username = Column(String,ForeignKey("users.username"),nullable=False)
+    parcel_id = Column(String,ForeignKey("parcel_details.parcel_id"),nullable=False)
+    issue_description = Column(String,nullable=False)
+    urgency_level = Column(String,nullable=False)
+    status = Column(String,default="Open",nullable=False)
+    created_at = Column(DateTime,default=datetime.utcnow,nullable=False)
 
 base.metadata.create_all(bind=engine)
 

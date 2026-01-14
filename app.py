@@ -20,6 +20,7 @@ def main():
     tracking_page = st.Page("web_pages/trackingPage.py",icon=":material/location_on:",title="Tracking")
     routing_page = st.Page("web_pages/userOrderPage.py",icon=":material/shopping_cart_checkout:",title="Place Order")
     feedback_page = st.Page("web_pages/feedbackPage.py",icon=":material/thumbs_up_down:", title="Feedback")
+    ticketing_page = st.Page("web_pages/ticketingPage.py",icon=":material/contact_support:",title="Place Ticket")
     
     if not st.session_state.logged_in:
         pg = st.navigation([login_page, register_page])
@@ -28,7 +29,7 @@ def main():
         if database.get_db().query(database.Users).filter(database.Users.is_admin==True, database.Users.username==st.session_state.user).first():
             pg= st.navigation([admin_dashboard_page, tracking_page,routing_page])
         else:
-            pg = st.navigation([dashboard_page, tracking_page, routing_page, feedback_page])
+            pg = st.navigation([dashboard_page, tracking_page, routing_page, feedback_page,ticketing_page])
         with st.sidebar:
             st.write(f"Logged in as {st.session_state.user}")
             logout_bt = st.button("Logout",icon=":material/logout:")
