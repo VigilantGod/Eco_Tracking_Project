@@ -4,7 +4,7 @@ from modules import database,ticketing
 
 st.title("Ticketing Page")
 
-with st.form(key="ticket_form"):
+with st.form(key="ticket_form",clear_on_submit=True):
     username = st.session_state.user
 
     parcel_id = st.text_input("Parcel ID")
