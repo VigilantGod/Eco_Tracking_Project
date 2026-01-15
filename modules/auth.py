@@ -7,7 +7,7 @@ from modules import encrypt
 
 psw_hasher = PasswordHasher()
 
-def create_user(full_name:str,username:str,email:str,phone_number:str,password:str):
+def create_user(full_name:str,username:str,email:str,phone_number:str,password:str,is_admin:bool=False):
     """Cretaes a User"""
     hashed_password = hash_password(password=password)
     db = database.get_db()
@@ -18,7 +18,8 @@ def create_user(full_name:str,username:str,email:str,phone_number:str,password:s
         user=username,
         email=email,
         phone_number=phone_number,
-        hashed_password=hashed_password
+        hashed_password=hashed_password,
+        is_admin=is_admin
         )
 
 
