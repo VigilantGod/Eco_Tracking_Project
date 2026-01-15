@@ -19,15 +19,17 @@ with st.form(key="ticket_form"):
         else:
             db = database.get_db()
 
-            ticketing.store_tickets(
+            ticket =   ticketing.store_tickets(
                 db = db,
                 username = username,
                 parcel_id= parcel_id,
                 issue_description= issue_description,
                 related_issue= related_issue
                 )
-            
-            st.success("Submitted the ticket")
+            if not ticket:
+                st.error("Error submitting the ticket. Please try again.")
+            else:
+                st.success("Submitted the ticket")
             
 
             

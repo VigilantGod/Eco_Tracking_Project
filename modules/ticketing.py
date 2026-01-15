@@ -11,6 +11,7 @@ def get_urgecy(related_issue):
             "Parcel is Missing":"High",
             "Bad Service":"Low"
             }
+    return urgency.get(related_issue,"Low")
 
 def generate_feedbackID():
 
@@ -39,9 +40,16 @@ def store_tickets(db,username:str,parcel_id:str,issue_description:str,related_is
         issue_description = issue_description,
         urgency_level = get_urgecy(related_issue)
     )
-    db.add(new_ticket)
-    db.commit()
-    return ticket_id
+    try:
+        db.add(new_ticket)
+        db.commit()
+        return ticket_id
+    
+    except Exception as e:
+        db.rollback()
+        print(f"Error submitting ticket: {e}")
+        return False
+   
 
 def get_tickets_by_urgency_admins():
     """returns tuple of dataframes(low,medium,high urgency)"""
