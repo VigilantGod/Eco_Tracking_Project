@@ -4,7 +4,6 @@ venv/
 env/
 
 # Ignore database files
-data/ecotrack.db
 *.db
 *.sqlite3
 
