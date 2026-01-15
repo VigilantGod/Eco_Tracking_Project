@@ -16,7 +16,7 @@ This project is a web-based prototype designed for **EcoTrack Logistics**. It se
 * **Language:** Python 3.10+
 * **Framework:** Streamlit (for Rapid Prototyping)
 * **Mapping:** Folium & OpenStreetMap
-* **Database:** SQLite (Built-in)
+* **Database:** SQLite (SQLAlchemy)
 
 ---
 
