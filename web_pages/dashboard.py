@@ -7,7 +7,7 @@ st.title("Dashboard")
 tabs = st.tabs(["Your Parcels","Your Tickets"])
 
 
-user_parcel_df = tracking.get_parcel_details_for_users()
+user_parcel_df = tracking.get_parcel_details_for_users(st.session_state.user)
 user_ticket_df = ticketing.get_ticket_for_users(st.session_state.user)
 
 with tabs[0]:

@@ -25,13 +25,13 @@ def get_all_parcel_routes():
 
     return parcels
 
-def get_parcel_details_for_users():
+def get_parcel_details_for_users(user:str):
     """Return joined decrypted dataframe of parcel details"""
 
     db = database.get_db()
 
-    sql_query_parcels = db.query(database.Parcel_Details).statement
-    sql_query_routes = db.query(database.Routes).statement
+    sql_query_parcels = db.query(database.Parcel_Details).filter(database.Parcel_Details.username == user).statement
+    sql_query_routes = db.query(database.Routes).filter(database.Routes.username == user).statement
 
 
     parcel_df = pd.read_sql(sql_query_parcels,db.bind)

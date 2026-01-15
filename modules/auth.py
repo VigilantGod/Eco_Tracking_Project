@@ -1,7 +1,11 @@
-import bcrypt
+import streamlit as st
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
 from modules import database
 import re
 from modules import encrypt
+
+psw_hasher = PasswordHasher()
 
 def create_user(full_name:str,username:str,email:str,phone_number:str,password:str):
     """Cretaes a User"""
@@ -34,12 +38,22 @@ def hash_password(password:str):
     """
     Hashes the password
     """
-    return bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt()).decode("utf-8")
+    try:
+        return psw_hasher.hash(password)
+    except Exception as e:
+        st.error(f"Error hashing password: {e}")
+        return None
 
 def verify_password(txt_password:str,hashed_pass:str):
     """
     verifies a password
     """
-    return bcrypt.checkpw(txt_password.encode('utf-8'),hashed_pass.encode("utf-8"))
+    try:
+        return psw_hasher.verify(hashed_pass, txt_password)
+    except VerifyMismatchError:
+        return False
+    except Exception as e:
+        st.error(f"Error verifying password: {e}")
+        return False
 
 
