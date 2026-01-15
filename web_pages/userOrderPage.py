@@ -15,9 +15,9 @@ def format_time(duration_sec):
             
 def show_route(route):
     """Show route detail in app"""
-    st.subheader(f"{route["label"]}")
+    st.subheader(f"{route['label']}")
 
-    st.metric(label="Distance",value=f"{route["distance"]/1000} Km")
+    st.metric(label="Distance",value=f"{route['distance']/1000} Km")
 
     st.metric(label="Duration",value = format_time(route["duration"]))
 

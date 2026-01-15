@@ -27,6 +27,7 @@ def main():
             st.session_state.admin_setup_done = True
         except FileNotFoundError:
             print("No admin setup found. Skipping admin user creation.")
+            st.session_state.admin_setup_done = True
         except Exception as e:
             print(f"Error during admin setup: {e}")
 
