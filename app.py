@@ -48,7 +48,17 @@ def main():
         pg = st.navigation([login_page, register_page])
         pg.run()
     else:
-        if database.get_db().query(database.Users).filter(database.Users.is_admin==True, database.Users.username==st.session_state.user).first():
+        is_admin_user =False
+        db = database.get_db()
+        try:
+            current_user = db.query(database.Users).filter(database.Users.username==st.session_state.user).first()
+            if current_user and current_user.is_admin:
+                is_admin_user = True
+        except Exception as e:
+            st.error(f"Error checking admin status: {e}")
+        finally:
+            db.close()
+        if is_admin_user:
             pg= st.navigation([admin_dashboard_page, tracking_page,routing_page])
         else:
             pg = st.navigation([dashboard_page, tracking_page, routing_page, feedback_page,ticketing_page])
