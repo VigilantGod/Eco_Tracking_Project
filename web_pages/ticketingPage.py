@@ -24,7 +24,7 @@ with st.form(key="ticket_form"):
                 username = username,
                 parcel_id= parcel_id,
                 issue_description= issue_description,
-                realated_issue= related_issue
+                related_issue= related_issue
                 )
             
             st.success("Submitted the ticket")

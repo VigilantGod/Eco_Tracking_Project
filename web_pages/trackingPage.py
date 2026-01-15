@@ -48,7 +48,14 @@ if st.session_state.tracking_data:
     if not latest_GPS_entry:
         st.warning("Order placed,hasn't pickup yet")
         route_cords = routing.get_routes_as_list(parcel_route.route)
-        cords_list = [[lat,lon] for lat,lon in route_cords]
+
+        cords_list = []
+        if route_cords:
+            cords_list = [[lat,lon] for lat,lon in route_cords]
+        else:
+            st.warning("Route isn't calculated")
+            st.stop()
+            
 
         new_db_session = database.get_db()
         
