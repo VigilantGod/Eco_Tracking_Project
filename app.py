@@ -21,7 +21,8 @@ def main():
                 username=admin_user,
                 email=admin_email,
                 phone_number="+0000000000",
-                password=admin_psw
+                password=admin_psw,
+                is_admin=True
             )
             st.session_state.admin_setup_done = True
         except FileNotFoundError:
