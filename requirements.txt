@@ -11,3 +11,4 @@ st_star_rating==0.0.6
 streamlit==1.52.2
 streamlit_folium==0.26.1
 streamlit_js_eval==0.1.7
+passlib
