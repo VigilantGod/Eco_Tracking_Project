@@ -105,8 +105,9 @@ def parcel_form():
                     )
 
                 st.success("Successfully saved parcel details")
+                st.toast("Successfully saved parcel details")
                 st.session_state.order_step += 1
-                time.sleep(0.3)
+                time.sleep(0.5)
                 st.rerun()
 
 def start_delivery(route):
@@ -226,6 +227,7 @@ def route_selection(show_route, update_selection):
             )
         st.session_state.parcel_id = None
         st.success("Successfully saved route")
+        st.toast("Successfully saved route")
         st.session_state.order_step = 0
         time.sleep(0.5)
         st.rerun()
