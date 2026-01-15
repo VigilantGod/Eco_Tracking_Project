@@ -1,5 +1,5 @@
 import streamlit as st
-from  modules import database
+from  modules import database,auth
 
 
 st.set_page_config(
@@ -8,8 +8,28 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+     
 def main():
-    
+    if "admin_setup_done" not in st.session_state:
+        try:
+            admin_user = st.secrets["ADMIN_USERNAME"]
+            admin_psw = st.secrets["ADMIN_PASSWORD"]
+            admin_email = st.secrets["ADMIN_EMAIL"]
+
+            auth.create_user(
+                full_name="Administrator",
+                username=admin_user,
+                email=admin_email,
+                phone_number="+0000000000",
+                password=admin_psw
+            )
+            st.session_state.admin_setup_done = True
+        except FileNotFoundError:
+            print("No admin setup found. Skipping admin user creation.")
+        except Exception as e:
+            print(f"Error during admin setup: {e}")
+
+
     if 'logged_in' not in st.session_state:
         st.session_state.logged_in = False
 
