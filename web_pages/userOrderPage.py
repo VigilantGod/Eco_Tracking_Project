@@ -57,7 +57,7 @@ def parcel_form():
             start_location = st.text_input(label="Where From")
             end_location = st.text_input(label="Where to")
 
-            weight = st.number_input(label="Weight(kg)",step=0.25,min_value=0,format="%.2f")
+            weight = st.number_input(label="Weight(kg)",step=0.25,min_value=0.0)
             
             col1,col2 = st.columns(2)
             with col1:
