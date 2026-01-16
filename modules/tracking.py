@@ -46,8 +46,6 @@ def get_parcel_details_for_users(user:str):
 
     complete_parcel_df = parcel_df.merge(route_df,on=["parcel_id","username"],how="left")
 
-    complete_parcel_df["distance"] = parcel_df["distance"]/1000
-
     return complete_parcel_df[["parcel_id","contact_number","start_loc","end_loc","is_fragile","duration","distance","route_type"]]
 
 def get_parcel_details_for_admins():
@@ -70,6 +68,5 @@ def get_parcel_details_for_admins():
         parcel_df[col] = parcel_df[col].apply(encrypt.decrypt_data)
 
     complete_parcel_df = parcel_df.merge(route_df,on=["parcel_id","username"],how="left")
-    complete_parcel_df["distance"] = parcel_df["distance"]/1000
 
     return complete_parcel_df
