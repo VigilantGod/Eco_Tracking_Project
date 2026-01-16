@@ -8,9 +8,18 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-     
+
 def main():
-    if "admin_setup_done" not in st.session_state:
+    db = database.get_db()
+    try:
+        admin_exists =  db.query(database.Users).filter(database.Users.username == "admin").first() is not None
+    except Exception as e:
+        st.error(f"Error checking for admin user: {e}")
+        admin_exists = False
+    finally:
+        db.close()
+
+    if "admin_setup_done" not in st.session_state and admin_exists == False:
         try:
             admin_user = st.secrets["ADMIN_USERNAME"]
             admin_psw = st.secrets["ADMIN_PASSWORD"]
