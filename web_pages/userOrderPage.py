@@ -153,7 +153,7 @@ def route_selection(show_route, update_selection):
 
         route_list.append({
             "duration": duration_sec,
-            "distance":distance_meters,
+            "distance":distance_meters/1000,
             "route":route_cords,
             "label":"Standard Route"
         })
