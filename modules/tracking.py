@@ -40,11 +40,10 @@ def get_parcel_details_for_users(user:str):
     route_df["route"] = route_df["route"].apply(routing.get_routes_as_list)
 
     encrypted_cols = ["sender_name","contact_number","parcel_type","start_loc","end_loc","description"]
-    encrypted_cols = ["sender_name","contact_number","parcel_type","start_loc","end_loc","description"]
     
     for col in encrypted_cols:
-    for col in encrypted_cols:
-        parcel_df[col] = parcel_df[col].apply(encrypt.decrypt_data)
+        if col in parcel_df.columns:
+            parcel_df[col] = parcel_df[col].apply(encrypt.decrypt_data)
 
     complete_parcel_df = parcel_df.merge(route_df,on=["parcel_id","username"],how="left")
 
